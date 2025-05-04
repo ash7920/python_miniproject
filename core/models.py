@@ -27,10 +27,13 @@ class Connection(models.Model):
 class Note(models.Model):
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to='notes/')
+    description = models.TextField(blank=True, null=True)  # Add this
+    file = models.FileField(upload_to='media/notes/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)  # Add this
 
     def __str__(self):
         return self.title
+
 
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

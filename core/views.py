@@ -247,18 +247,31 @@ def upload_note(request):
 
 @login_required
 def view_notes(request):
-    notes = Note.objects.filter(uploaded_by=request.user)
+    notes = Note.objects.all().order_by('-uploaded_at')  # To show everyone's notes
     return render(request, 'view_notes.html', {'notes': notes})
 
 @login_required
+@login_required
 def tasks(request):
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(user=request.user)  # Fetch tasks for the logged-in user
+    
     if request.method == 'POST':
-        task_name = request.POST.get('task')
-        if task_name:
-            Task.objects.create(user=request.user, title=task_name, is_done=False)
+        # Handle simple form submission with just a title field
+        task_title = request.POST.get('title')
+        if task_title:
+            # Create new task with the provided title
+            Task.objects.create(
+                user=request.user,
+                title=task_title,
+                is_done=False
+            )
             messages.success(request, "Task added successfully.")
+            return redirect('tasks')
+        else:
+            messages.error(request, "Task title cannot be empty.")
+
     return render(request, 'tasks.html', {'tasks': tasks})
+
 
 @login_required
 def toggle_task(request, task_id):
@@ -364,3 +377,44 @@ def complete_meeting(request, meeting_id):
     messages.success(request, "Meeting marked as completed and deleted.")
     return redirect('connections')
 
+@login_required
+def notes_dashboard(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST, request.FILES)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.uploaded_by = request.user
+            note.save()
+            messages.success(request, "Note uploaded successfully.")
+            return redirect('notes_dashboard')
+    else:
+        form = NoteForm()
+
+    # Show own + connected users' notes
+    connections = Connection.objects.filter(
+        Q(from_user=request.user) | Q(to_user=request.user),
+        is_accepted=True
+    )
+    connected_user_ids = set()
+    for conn in connections:
+        if conn.from_user != request.user:
+            connected_user_ids.add(conn.from_user.id)
+        if conn.to_user != request.user:
+            connected_user_ids.add(conn.to_user.id)
+
+    notes = Note.objects.filter(
+        Q(uploaded_by=request.user) | Q(uploaded_by__id__in=connected_user_ids)
+    )
+
+    return render(request, 'notes_dashboard.html', {'form': form, 'notes': notes})
+
+@login_required
+def delete_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
+    if note.uploaded_by != request.user:
+        return HttpResponseForbidden("You do not have permission to delete this note.")
+
+    note.delete()
+    messages.success(request, "Note deleted successfully.")
+    return redirect('notes_dashboard')

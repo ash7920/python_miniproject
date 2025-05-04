@@ -17,8 +17,8 @@ urlpatterns = [
     path('reject_connection/<int:conn_id>/', views.reject_request, name='reject_connection'),
     path('send_request/<int:user_id>/', views.send_request, name='send_request'),
     path('accept_request/<int:conn_id>/', views.accept_request, name='accept_request'),
-    path('upload_note/', views.upload_note, name='upload_note'),
-    path('view_notes/', views.view_notes, name='view_notes'),
+    #path('upload_note/', views.upload_note, name='upload_note'),
+    #path('view_notes/', views.view_notes, name='view_notes'),
     path('tasks/', views.tasks, name='tasks'),
     path('toggle_task/<int:task_id>/', views.toggle_task, name='toggle_task'),
     path('delete_task/<int:task_id>/', views.delete_task, name='delete_task'),
@@ -26,4 +26,7 @@ urlpatterns = [
     path('schedule_meeting/<int:conn_id>/', views.schedule_meeting, name='schedule_meeting'),
     path('connections/unique/', views.get_unique_connections, name='get_unique_connections'),
     path('complete_meeting/<int:meeting_id>/', views.complete_meeting, name='complete_meeting'),
+    path('notes_dashboard/', views.notes_dashboard, name='notes_dashboard'),
+    path('delete_note/<int:note_id>/', views.delete_note, name='delete_note'),
+
 ]

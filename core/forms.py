@@ -32,7 +32,8 @@ class ProfileForm(forms.ModelForm):
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['title', 'file']
+        fields = ['title', 'description', 'file']
+
 
 class TaskForm(forms.ModelForm):
     class Meta:

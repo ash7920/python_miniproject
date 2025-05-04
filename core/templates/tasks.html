@@ -1,32 +1,60 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Study Task Manager</h2>
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">Study Task Manager</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Add Task</button>
-</form>
+    <!-- Action Buttons -->
+    <div class="text-center mb-4">
+        <button class="btn btn-primary btn-lg me-3" onclick="toggleSection('addTaskForm')">➕ Add Task</button>
+        <button class="btn btn-secondary btn-lg" onclick="toggleSection('viewTasks')">📋 View My Tasks</button>
+    </div>
 
-<ul class="list-group mt-4">
-    {% for task in tasks %}
-        <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}text-muted text-decoration-line-through{% endif %}">
-            {{ task.title }}
-            <div>
-                <form method="post" action="{% url 'toggle_task' task.id %}" class="d-inline">
-                    {% csrf_token %}
-                    <button class="btn btn-sm {% if task.completed %}btn-secondary{% else %}btn-success{% endif %}">
-                        {% if task.completed %}Undo{% else %}Done{% endif %}
-                    </button>
-                </form>
-                <form method="post" action="{% url 'delete_task' task.id %}" class="d-inline">
-                    {% csrf_token %}
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                </form>
+    <!-- Add Task Form Section (Initially Hidden) -->
+    <div id="addTaskForm" style="display: none;">
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="title" class="form-control" placeholder="Enter a new task..." required>
+                <button class="btn btn-primary" type="submit">Add Task</button>
             </div>
-        </li>
-    {% empty %}
-        <li class="list-group-item">No tasks added yet.</li>
-    {% endfor %}
-</ul>
+        </form>
+    </div>
+
+    <!-- View Tasks Section (Initially Hidden) -->
+    <div id="viewTasks" style="display: none;">
+        <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center {% if task.is_done %}text-muted text-decoration-line-through{% endif %}">
+                    {{ task.title }}
+                    <div>
+                        <!-- Toggle Completion -->
+                        <form method="post" action="{% url 'toggle_task' task.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button class="btn btn-sm {% if task.is_done %}btn-secondary{% else %}btn-success{% endif %}">
+                                {% if task.is_done %}Completed{% else %}Done{% endif %}
+                            </button>
+                        </form>
+
+                        <!-- Delete Task -->
+                        <form method="post" action="{% url 'delete_task' task.id %}" class="d-inline ms-1">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No tasks added yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+    function toggleSection(sectionId) {
+        document.getElementById('addTaskForm').style.display = 'none';
+        document.getElementById('viewTasks').style.display = 'none';
+        document.getElementById(sectionId).style.display = 'block';
+    }
+</script>
 {% endblock %}

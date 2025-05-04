@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Peer Notes</h2>
+
+    <!-- Action Buttons -->
+    <div class="text-center mb-4">
+        <button class="btn btn-primary btn-lg me-3" onclick="toggleSection('uploadForm')">📤 Upload Note</button>
+        <button class="btn btn-secondary btn-lg" onclick="toggleSection('viewNotes')">📄 View Notes</button>
+    </div>
+
+    <!-- Upload Form Section (Initially Hidden) -->
+    <div id="uploadForm" style="display: none;">
+        <form method="POST" enctype="multipart/form-data" class="mb-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Upload Note</button>
+        </form>
+    </div>
+
+    <!-- Notes List Section (Initially Hidden) -->
+    <div id="viewNotes" style="display: none;">
+        <div class="row">
+            {% for note in notes %}
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ note.title }}</h5>
+                        <p class="card-text">
+                            <small class="text-muted">Uploaded by {{ note.uploaded_by.username }}</small>
+                        </p>
+                        <a href="{{ note.file.url }}" class="btn btn-primary btn-sm me-2" download>📥 Download</a>
+
+                        {% if note.uploaded_by == request.user %}
+                            <!-- Delete Note Button -->
+                            <a href="{% url 'delete_note' note.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this note?');">🗑️ Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No notes have been uploaded yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSection(sectionId) {
+        document.getElementById('uploadForm').style.display = 'none';
+        document.getElementById('viewNotes').style.display = 'none';
+        document.getElementById(sectionId).style.display = 'block';
+    }
+</script>
+{% endblock %}

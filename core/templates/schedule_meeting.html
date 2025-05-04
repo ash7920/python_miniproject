@@ -28,5 +28,8 @@
 
     <button type="submit" class="btn btn-primary">Schedule Meeting</button>
 </form>
+{% if scheduled_meeting %}
+    <p><strong>Meeting Scheduled by:</strong> {{ request.user.username }}</p> <!-- Display the user who scheduled -->
+{% endif %}
 
 {% endblock %}
