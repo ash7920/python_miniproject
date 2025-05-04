@@ -67,6 +67,12 @@
                                         <p><strong>Meeting Details:</strong></p>
                                         <p><strong>Time:</strong> {{ conn.meeting.scheduled_time|date:"F j, Y, g:i a" }}</p>
                                         <p><strong>Description:</strong> {{ conn.meeting.description }}</p>
+                                        <!-- Who scheduled the meeting -->
+                                        {% if meeting.connection.from_user == request.user %}
+                                        <p><strong>Scheduled by:</strong> You</p>
+                                        {% else %}
+                                        <p><strong>Scheduled by:</strong> {{ conn.meeting.connection.from_user.username }}</p>
+                                        {% endif %}
                                         <form method="post" action="{% url 'complete_meeting' conn.meeting.id %}" class="d-inline">
                                             {% csrf_token %}
                                             <button class="btn btn-danger btn-sm">Complete Meeting</button>

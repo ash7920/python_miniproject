@@ -226,11 +226,6 @@ def schedule_meeting(request, conn_id):
         'subject': subject  # Pass the subject here
     })
 
-
-
-
-
-
 @login_required
 def upload_note(request):
     if request.method == 'POST':
