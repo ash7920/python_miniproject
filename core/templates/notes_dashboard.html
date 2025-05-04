@@ -1,6 +1,83 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container mt-5">
+<style>
+  html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to top, #E8C79A, #3A7D96);
+      font-family: 'Montserrat', sans-serif;
+  }
+
+  .notes-wrapper {
+      min-height: 100vh;
+      padding: 6vh 5vw;
+      color: white;
+  }
+
+  h2 {
+      font-weight: 700;
+      color: white;
+      text-align: center;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-success {
+      border: none;
+      font-weight: 600;
+  }
+
+  .btn-primary {
+      background-color: #000;
+      color: #fff;
+  }
+
+  .btn-primary:hover {
+      background-color: #222;
+      color: #fff;
+  }
+
+  .btn-secondary {
+      background-color: #000000;
+      color: #fff;
+  }
+
+  .btn-secondary:hover {
+      background-color: #222;
+      color: #fff;
+  }
+
+  .btn-success {
+      background-color: #28a745;
+      color: #fff;
+  }
+
+  .btn-danger {
+      font-weight: 600;
+  }
+
+  .card {
+      background-color: #000;
+      color: white;
+      border: 2px solid #333;
+  }
+
+  .card-title {
+      font-weight: 600;
+      color: white; /* updated color */
+  }
+
+  .text-muted {
+      color: #ccc !important;
+  }
+
+  .text-center button {
+      margin: 0.5rem;
+  }
+</style>
+
+<div class="notes-wrapper">
     <h2 class="mb-4">Peer Notes</h2>
 
     <!-- Action Buttons -->
@@ -39,7 +116,7 @@
                 </div>
             </div>
             {% empty %}
-            <p>No notes have been uploaded yet.</p>
+            <p class="text-white">No notes have been uploaded yet.</p>
             {% endfor %}
         </div>
     </div>

@@ -1,13 +1,81 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2 class="mb-4 text-center text-primary">Login</h2>
+<style>
+  body {
+      background: linear-gradient(to top, #E8C79A, #3A7D96);
+      font-family: 'Montserrat', sans-serif;
+  }
+
+  .page-wrapper {
+      min-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+  }
+
+  .overlay {
+      position: absolute;
+      top: 10;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      z-index: 0;
+  }
+
+  .login-container {
+      position: relative;
+      z-index: 1;
+      background: #000;
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+  }
+
+  .login-container h2 {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: white; /* explicitly set to white */
+  }
+
+  .login-container label {
+      color: #eee;
+      font-weight: 500;
+  }
+
+  .login-container input {
+      background-color: #222;
+      color: white;
+      border: 1px solid #555;
+  }
+
+  .login-container .btn {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      font-weight: 600;
+  }
+
+  .login-container .btn:hover {
+      background-color: #ddd;
+  }
+</style>
+
+<div class="page-wrapper">
+  <div class="overlay"></div>
+  <div class="login-container">
+    <h2>Login</h2>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <button type="submit" class="btn btn-block mt-3">Login</button>
     </form>
   </div>
 </div>

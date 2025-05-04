@@ -1,8 +1,88 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4 text-primary">Study Task Manager</h2>
+<style>
+  html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to top, #E8C79A, #3A7D96);
+      font-family: 'Montserrat', sans-serif;
+  }
+
+  .task-wrapper {
+      min-height: 100vh;
+      padding: 6vh 5vw;
+      color: white;
+  }
+
+  h2 {
+      color: white;
+      font-weight: 700;
+      text-align: center;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .btn-success {
+      font-weight: 600;
+      color: white;
+  }
+
+  .btn-primary {
+      background-color: #000;
+      border: none;
+  }
+
+  .btn-primary:hover {
+      background-color: #222;
+  }
+
+  .btn-secondary {
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+  }
+
+  .btn-secondary:hover {
+      background-color: #222;
+  }
+
+  .btn-danger {
+      background-color: #dc3545;
+      border: none;
+      color: white;
+  }
+
+  .btn-success {
+      background-color: #28a745 !important;
+      border: none;
+      color: white !important;
+  }
+
+  .list-group-item {
+      background-color: #000;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+  }
+
+  .text-muted {
+      color: #aaa !important;
+  }
+
+  .text-decoration-line-through {
+      text-decoration: line-through;
+  }
+
+  .form-control {
+      border-radius: 0.5rem;
+  }
+</style>
+
+<div class="task-wrapper">
+    <h2 class="mb-4">Study Task Manager</h2>
 
     <!-- Action Buttons -->
     <div class="text-center mb-4">
@@ -10,7 +90,7 @@
         <button class="btn btn-secondary btn-lg" onclick="toggleSection('viewTasks')">📋 View My Tasks</button>
     </div>
 
-    <!-- Add Task Form Section (Initially Hidden) -->
+    <!-- Add Task Form Section -->
     <div id="addTaskForm" style="display: none;">
         <form method="post" class="mb-4">
             {% csrf_token %}
@@ -21,7 +101,7 @@
         </form>
     </div>
 
-    <!-- View Tasks Section (Initially Hidden) -->
+    <!-- View Tasks Section -->
     <div id="viewTasks" style="display: none;">
         <ul class="list-group">
             {% for task in tasks %}
@@ -31,7 +111,7 @@
                         <!-- Toggle Completion -->
                         <form method="post" action="{% url 'toggle_task' task.id %}" class="d-inline">
                             {% csrf_token %}
-                            <button class="btn btn-sm {% if task.is_done %}btn-secondary{% else %}btn-success{% endif %}">
+                            <button class="btn btn-sm {% if task.is_done %}btn-success{% else %}btn-success{% endif %}">
                                 {% if task.is_done %}Completed{% else %}Done{% endif %}
                             </button>
                         </form>

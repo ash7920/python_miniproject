@@ -1,35 +1,95 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>
-    Schedule Meeting with 
-    {% if connection.from_user == request.user %}
-        {{ connection.to_user.username }}
-    {% else %}
-        {{ connection.from_user.username }}
+<style>
+  html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to top, #E8C79A, #3A7D96);
+      font-family: 'Montserrat', sans-serif;
+  }
+
+  .meeting-wrapper {
+      min-height: 100vh;
+      padding: 6vh 5vw;
+      color: white;
+  }
+
+  h2 {
+      text-align: center;
+      color: white;
+      font-weight: 700;
+      margin-bottom: 2rem;
+  }
+
+  .form-group label {
+      color: white;
+      font-weight: 600;
+  }
+
+  .form-control {
+      border-radius: 8px;
+      border: none;
+      padding: 0.5rem 1rem;
+      background-color: #000;
+      color: white;
+  }
+
+  .form-control::placeholder {
+      color: #aaa;
+  }
+
+  .btn-primary {
+      background-color: #000;
+      color: white;
+      border: none;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+  }
+
+  .btn-primary:hover {
+      background-color: #222;
+  }
+
+  p {
+      color: white;
+      text-align: center;
+      margin-top: 2rem;
+  }
+</style>
+
+<div class="meeting-wrapper">
+    <h2>
+        Schedule Meeting with 
+        {% if connection.from_user == request.user %}
+            {{ connection.to_user.username }}
+        {% else %}
+            {{ connection.from_user.username }}
+        {% endif %}
+    </h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Date & Time Selection -->
+        <div class="form-group mb-4">
+            <label for="scheduled_time">Select Date & Time</label>
+            <input type="datetime-local" id="scheduled_time" name="scheduled_time" class="form-control" required>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-4">
+            <label for="description">Meeting Description</label>
+            <textarea id="description" name="description" class="form-control" rows="3" placeholder="Enter a short agenda or notes..."></textarea>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Schedule Meeting</button>
+        </div>
+    </form>
+
+    {% if scheduled_meeting %}
+        <p><strong>Meeting Scheduled by:</strong> {{ request.user.username }}</p>
     {% endif %}
-</h2>
-
-<form method="post">
-    {% csrf_token %}
-    
-    <!-- Date & Time Selection -->
-    <div class="form-group">
-        <label for="scheduled_time">Select Date & Time</label>
-        <input type="datetime-local" id="scheduled_time" name="scheduled_time" class="form-control" required>
-    </div>
-
-
-    <!-- Description -->
-    <div class="form-group">
-        <label for="description">Meeting Description</label>
-        <textarea id="description" name="description" class="form-control" rows="3"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Schedule Meeting</button>
-</form>
-{% if scheduled_meeting %}
-    <p><strong>Meeting Scheduled by:</strong> {{ request.user.username }}</p> <!-- Display the user who scheduled -->
-{% endif %}
-
+</div>
 {% endblock %}
