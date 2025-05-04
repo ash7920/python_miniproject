@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center">
+    <h1>Welcome to Peerfect Tutoring</h1>
+    <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+    <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+</div>
+{% endblock %}

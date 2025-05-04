@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Peer Connections</h2>
+
+<!-- All Students -->
+<h4>All Students</h4>
+<ul class="list-group mb-4">
+    {% for profile, status in profiles_with_status %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ profile.user.username }} - {{ profile.year }}, {{ profile.department }} - > {{ profile.subject }}
+            {% if status == 'Request Sent' %}
+                <span class="badge badge-secondary">Requested</span>
+            {% elif status == 'Request Received' %}
+                <span class="badge badge-warning">Request Received</span>
+            {% else %}
+                <form method="post" action="{% url 'send_connection' profile.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-primary btn-sm">Send Request</button>
+                </form>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">No students found.</li>
+    {% endfor %}
+</ul>
+
+<!-- Requests Received -->
+<h4>Requests Received</h4>
+<ul class="list-group mb-4">
+    {% for request in pending_requests %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ request.from_user.username }}
+            <div>
+                <form method="post" action="{% url 'accept_connection' request.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-sm">Accept</button>
+                </form>
+                <form method="post" action="{% url 'reject_connection' request.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            </div>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No pending requests.</li>
+    {% endfor %}
+</ul>
+
+<!-- Your Connections -->
+<h4>Your Connections</h4>
+<ul class="list-group">
+    {% for profile in connected_profiles %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ profile.user.username }} - {{ profile.subject }} <!-- Displaying Subject -->
+            
+            <!-- Displaying meeting status and complete meeting option -->
+            {% comment %} Loop over all connections only once and check if meeting exists {% endcomment %}
+            {% with connection=None %}
+                {% for conn in all_connections %}
+                    {% if conn.from_user.id == profile.user.id or conn.to_user.id == profile.user.id %}
+                        {% if connection == None %}
+                            {% with connection=conn %}
+                                {% if conn.meeting %}
+                                    <span class="badge badge-success">Meeting Scheduled</span>
+                                    <div class="meeting-details">
+                                        <p><strong>Meeting Details:</strong></p>
+                                        <p><strong>Time:</strong> {{ conn.meeting.scheduled_time|date:"F j, Y, g:i a" }}</p>
+                                        <p><strong>Description:</strong> {{ conn.meeting.description }}</p>
+                                        <form method="post" action="{% url 'complete_meeting' conn.meeting.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger btn-sm">Complete Meeting</button>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <form method="get" action="{% url 'schedule_meeting' conn.id %}" class="d-inline">
+                                        <button class="btn btn-warning btn-sm">Schedule Meet</button>
+                                    </form>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">You have no connections yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

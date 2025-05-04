@@ -1,0 +1,165 @@
+/* Base styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    color: #2a6e9f;
+}
+
+a {
+    text-decoration: none;
+    color: #2a6e9f;
+}
+
+a:hover {
+    color: #4c9cd9;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #2a6e9f;
+    border-bottom: 3px solid #1a4e6f;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.navbar-nav .nav-item {
+    margin-right: 20px;
+}
+
+.navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #f4f7fc;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #2a6e9f;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1a4e6f;
+}
+
+.btn-secondary {
+    background-color: #f4f7fc;
+    color: #2a6e9f;
+    border: 1px solid #2a6e9f;
+}
+
+.btn-secondary:hover {
+    background-color: #e3e9f1;
+}
+
+/* Cards */
+.card {
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #2a6e9f;
+}
+
+.card-text {
+    color: #555;
+}
+
+.card-footer {
+    text-align: right;
+}
+
+/* Container for profile info */
+.profile-info {
+    margin-top: 20px;
+}
+
+.profile-info h2 {
+    color: #1a4e6f;
+}
+
+/* Form styles */
+.form-group label {
+    font-weight: bold;
+    color: #333;
+}
+
+input, textarea {
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="file"] {
+    padding: 5px;
+}
+
+/* Tasks and Notes Table */
+.table thead {
+    background-color: #2a6e9f;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: #f4f7fc;
+}
+
+/* Icons */
+.icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.icon-notebook {
+    background-image: url('https://img.icons8.com/ios/452/notebook.png');
+}
+
+.icon-connection {
+    background-image: url('https://img.icons8.com/ios/452/conference-call.png');
+}
+
+.icon-task {
+    background-image: url('https://img.icons8.com/ios/452/task.png');
+}
+
+.icon-note {
+    background-image: url('https://img.icons8.com/ios/452/paper.png');
+}
+
+.icon-meeting {
+    background-image: url('https://img.icons8.com/ios/452/schedule.png');
+}
+
+/* Footer */
+footer {
+    background-color: #2a6e9f;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

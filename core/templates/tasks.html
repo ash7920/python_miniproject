@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Study Task Manager</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Add Task</button>
+</form>
+
+<ul class="list-group mt-4">
+    {% for task in tasks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}text-muted text-decoration-line-through{% endif %}">
+            {{ task.title }}
+            <div>
+                <form method="post" action="{% url 'toggle_task' task.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-sm {% if task.completed %}btn-secondary{% else %}btn-success{% endif %}">
+                        {% if task.completed %}Undo{% else %}Done{% endif %}
+                    </button>
+                </form>
+                <form method="post" action="{% url 'delete_task' task.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No tasks added yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

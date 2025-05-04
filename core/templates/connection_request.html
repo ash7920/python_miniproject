@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Peer Connections</h2>
+
+<!-- All Students -->
+<h4>All Students</h4>
+<ul class="list-group">
+    {% for profile in all_profiles %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ profile.user.username }} - {{ profile.year }}, {{ profile.department }}
+            
+            {% if profile != user_profile %}
+                {% if profile.user.id not in connected_user_ids %}
+                    <form method="post" action="{% url 'send_connection' profile.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-primary btn-sm">Send Request</button>
+                    </form>
+                {% else %}
+                    <span class="badge badge-info">Request Sent or Connected</span>
+                {% endif %}
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">No students found.</li>
+    {% endfor %}
+</ul>
+
+<!-- Requests Received -->
+<h4 class="mt-4">Requests Received</h4>
+<ul class="list-group">
+    {% for request in received_requests %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ request.from_user.username }}
+            <div>
+                <form method="post" action="{% url 'accept_connection' request.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-success btn-sm">Accept</button>
+                </form>
+                <form method="post" action="{% url 'reject_connection' request.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            </div>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No pending requests.</li>
+    {% endfor %}
+</ul>
+
+<!-- Your Connections -->
+<h4 class="mt-4">Your Connections</h4>
+<ul class="list-group">
+    {% for conn in user_connections %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {% if conn.from_user == user_profile.user %}
+                {{ conn.to_user.username }}
+            {% else %}
+                {{ conn.from_user.username }}
+            {% endif %}
+
+            {% if conn.meet_scheduled %}
+                <span class="badge bg-success">Meeting Scheduled</span>
+            {% else %}
+                <form method="post" action="{% url 'schedule_meeting' conn.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-warning btn-sm">Schedule Meet</button>
+                </form>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">No connections yet.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

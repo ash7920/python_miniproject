@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4 text-primary">Dashboard</h2>
+<h2>Welcome, {{ user.first_name }} {{ user.last_name }}!</h2>
+<div class="card">
+  <div class="card-body">
+    <p>Here you can manage your profile, connect with peers, and more.</p>
+    <a href="{% url 'connections' %}" class="btn btn-outline-primary">View Connections</a>
+  </div>
+</div>
+{% endblock %}

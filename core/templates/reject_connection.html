@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Reject Connection Request</h2>
+    <p>Are you sure you want to reject the connection request from {{ user_to_reject.username }}?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Reject</button>
+        <a href="{% url 'connections' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Peer Notes</h2>
+    <div class="row">
+        {% for note in notes %}
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ note.title }}</h5>
+                    <p class="card-text">{{ note.description }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">Uploaded by {{ note.uploader.username }} on {{ note.uploaded_at|date:"M d, Y" }}</small>
+                    </p>
+                    <a href="{{ note.file.url }}" class="btn btn-primary" download>Download</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No notes have been uploaded yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

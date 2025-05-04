@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Your Connections</h2>
+    <ul class="list-group">
+        {% for connection in connections %}
+        <li class="list-group-item">
+            {{ connection.user.username }} - 
+            {% if connection.status == 'pending' %}
+            <span class="text-warning">Pending</span>
+            {% elif connection.status == 'accepted' %}
+            <span class="text-success">Accepted</span>
+            {% else %}
+            <span class="text-danger">Rejected</span>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li class="list-group-item">You have no connections yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

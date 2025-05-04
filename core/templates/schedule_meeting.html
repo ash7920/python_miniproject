@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>
+    Schedule Meeting with 
+    {% if connection.from_user == request.user %}
+        {{ connection.to_user.username }}
+    {% else %}
+        {{ connection.from_user.username }}
+    {% endif %}
+</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <!-- Date & Time Selection -->
+    <div class="form-group">
+        <label for="scheduled_time">Select Date & Time</label>
+        <input type="datetime-local" id="scheduled_time" name="scheduled_time" class="form-control" required>
+    </div>
+
+
+    <!-- Description -->
+    <div class="form-group">
+        <label for="description">Meeting Description</label>
+        <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Schedule Meeting</button>
+</form>
+
+{% endblock %}
