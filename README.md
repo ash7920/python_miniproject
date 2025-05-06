@@ -1,6 +1,6 @@
 # python_miniproject
 
-#screenshots of our web application
+screenshots of our web application
 
 ![Picture1](https://github.com/user-attachments/assets/138f2d19-2a3c-4040-b896-c0b40d407ed5)
 
